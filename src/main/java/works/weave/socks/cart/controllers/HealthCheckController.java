@@ -29,13 +29,16 @@ public class HealthCheckController {
        Date dateNow = Calendar.getInstance().getTime();
        HealthCheck app = new HealthCheck("carts", "OK", dateNow);
        HealthCheck database = new HealthCheck("carts-db", "OK", dateNow);
+
        try {
           mongoTemplate.executeCommand("{ buildInfo: 1 }");
        } catch (Exception e) {
           database.setStatus("err");
        }
+
        healthChecks.add(app);
        healthChecks.add(database);
+
        map.put("health", healthChecks);
        return map;
     }
